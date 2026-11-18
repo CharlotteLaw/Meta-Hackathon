@@ -1,0 +1,212 @@
+[
+  {
+    "process": "updater",
+    "target": "parent=sched hash=f22d7c5df6e2 signed=yes",
+    "count": 50000
+  },
+  {
+    "process": "telemetry",
+    "target": "parent=sched hash=c53d0cde215c signed=yes",
+    "count": 50000
+  },
+  {
+    "process": "shield-agent",
+    "target": "parent=sched hash=7bfecc6abc10 signed=yes",
+    "count": 50000
+  },
+  {
+    "process": "sysupdate",
+    "target": "parent=sched hash=657d32a4fb05 signed=yes",
+    "count": 49989
+  },
+  {
+    "process": "bash",
+    "target": "parent=terminal hash=52feb5637790 signed=yes",
+    "count": 46726
+  },
+  {
+    "process": "chrome",
+    "target": "parent=desktop hash=499a15e69402 signed=yes",
+    "count": 15639
+  },
+  {
+    "process": "chromium",
+    "target": "parent=desktop hash=32354706841a signed=yes",
+    "count": 15559
+  },
+  {
+    "process": "firefox",
+    "target": "parent=desktop hash=e0b1dd802ac4 signed=yes",
+    "count": 15491
+  },
+  {
+    "process": "mailagent",
+    "target": "parent=bash hash=b29a98449156 signed=yes",
+    "count": 8622
+  },
+  {
+    "process": "lic-agent",
+    "target": "parent=sched hash=bdb6884c3a30 signed=yes",
+    "count": 5000
+  },
+  {
+    "process": "asset-agent",
+    "target": "parent=bash hash=628e6b3c8f41 signed=yes",
+    "count": 5000
+  },
+  {
+    "process": "dns-filter",
+    "target": "parent=bash hash=15cca0993c8f signed=yes",
+    "count": 5000
+  },
+  {
+    "process": "backup-agent",
+    "target": "parent=sched hash=c6747a659141 signed=yes",
+    "count": 4401
+  },
+  {
+    "process": "curl",
+    "target": "parent=bash hash=dcf712cc6547 signed=yes",
+    "count": 2470
+  },
+  {
+    "process": "ioc-lookup",
+    "target": "parent=bash hash=de581e77305d signed=yes",
+    "count": 2005
+  },
+  {
+    "process": "ml-train",
+    "target": "parent=sched hash=727963199c83 signed=yes",
+    "count": 510
+  },
+  {
+    "process": "doc_reader",
+    "target": "parent=bash hash=9f1aeb5bf9c3 signed=yes",
+    "count": 509
+  },
+  {
+    "process": "sync_helper",
+    "target": "parent=sched hash=631ede3a29cd signed=yes",
+    "count": 285
+  },
+  {
+    "process": "ping",
+    "target": "parent=bash hash=2a321d1a6839 signed=yes",
+    "count": 212
+  },
+  {
+    "process": "plugin-host",
+    "target": "parent=chrome hash=55b2c185e28d signed=yes",
+    "count": 111
+  },
+  {
+    "process": "vaultdrive_sync",
+    "target": "parent=sched hash=095d49dabe43 signed=yes",
+    "count": 93
+  },
+  {
+    "process": "usb-helper",
+    "target": "parent=sched hash=80e9c836e135 signed=no",
+    "count": 39
+  },
+  {
+    "process": "invoice_viewer",
+    "target": "parent=sched hash=7ac013541803 signed=yes",
+    "count": 36
+  },
+  {
+    "process": "net_scan",
+    "target": "parent=bash hash=bb0615bd71e9 signed=yes",
+    "count": 19
+  },
+  {
+    "process": "ldapsearch",
+    "target": "parent=bash hash=1166bc6b3148 signed=yes",
+    "count": 8
+  },
+  {
+    "process": "crawler",
+    "target": "parent=svc hash=f0bc8fe4a47f signed=yes",
+    "count": 5
+  },
+  {
+    "process": "nessus",
+    "target": "parent=svc hash=2785b3b20b55 signed=yes",
+    "count": 5
+  },
+  {
+    "process": "miner_worker",
+    "target": "parent=bash hash=25042c536b12 signed=yes",
+    "count": 5
+  },
+  {
+    "process": "python3",
+    "target": "parent=bash hash=f806caff75aa signed=yes",
+    "count": 5
+  },
+  {
+    "process": "masscan",
+    "target": "parent=bash hash=d748f391e44c signed=yes",
+    "count": 3
+  },
+  {
+    "process": "sysupdate",
+    "target": "parent=sched hash=e396eb69d15d signed=no",
+    "count": 1
+  },
+  {
+    "process": "sysupdate",
+    "target": "parent=sched hash=ae2e6de1525a signed=no",
+    "count": 1
+  },
+  {
+    "process": "sysupdate",
+    "target": "parent=sched hash=19afffcec533 signed=no",
+    "count": 1
+  },
+  {
+    "process": "sysupdate",
+    "target": "parent=sched hash=e78714fecd9e signed=no",
+    "count": 1
+  },
+  {
+    "process": "sysupdate",
+    "target": "parent=sched hash=22520158b6e7 signed=no",
+    "count": 1
+  },
+  {
+    "process": "sysupdate",
+    "target": "parent=sched hash=5d9af63b6a95 signed=no",
+    "count": 1
+  },
+  {
+    "process": "sysupdate",
+    "target": "parent=sched hash=a1c91877a6dc signed=no",
+    "count": 1
+  },
+  {
+    "process": "sysupdate",
+    "target": "parent=sched hash=6e9bab65d92b signed=no",
+    "count": 1
+  },
+  {
+    "process": "dirb",
+    "target": "parent=svc hash=68af85c02911 signed=yes",
+    "count": 1
+  },
+  {
+    "process": "sysupdate",
+    "target": "parent=sched hash=a4f0a7495f3c signed=no",
+    "count": 1
+  },
+  {
+    "process": "sysupdate",
+    "target": "parent=sched hash=050dafa50cf5 signed=no",
+    "count": 1
+  },
+  {
+    "process": "sysupdate",
+    "target": "parent=sched hash=89e6e388925a signed=no",
+    "count": 1
+  }
+]

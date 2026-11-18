@@ -1,0 +1,452 @@
+[
+  {
+    "rowid": 458349,
+    "ts": "2026-10-12T08:16:44.437Z",
+    "host": "WS-0734",
+    "event": "PROC_START",
+    "user": "-",
+    "process": "sysupdate",
+    "target": "parent=sched hash=e396eb69d15d signed=no"
+  },
+  {
+    "rowid": 476779,
+    "ts": "2026-10-12T08:47:33.568Z",
+    "host": "WS-5891",
+    "event": "PROC_START",
+    "user": "-",
+    "process": "sysupdate",
+    "target": "parent=sched hash=ae2e6de1525a signed=no"
+  },
+  {
+    "rowid": 2101873,
+    "ts": "2026-10-13T00:40:11.065Z",
+    "host": "WS-9323",
+    "event": "PROC_START",
+    "user": "-",
+    "process": "sysupdate",
+    "target": "parent=sched hash=19afffcec533 signed=no"
+  },
+  {
+    "rowid": 2482625,
+    "ts": "2026-10-13T08:19:24.244Z",
+    "host": "WS-8703",
+    "event": "PROC_START",
+    "user": "-",
+    "process": "sysupdate",
+    "target": "parent=sched hash=e78714fecd9e signed=no"
+  },
+  {
+    "rowid": 2500220,
+    "ts": "2026-10-13T08:47:55.014Z",
+    "host": "WS-5812",
+    "event": "PROC_START",
+    "user": "-",
+    "process": "sysupdate",
+    "target": "parent=sched hash=22520158b6e7 signed=no"
+  },
+  {
+    "rowid": 2562134,
+    "ts": "2026-10-13T09:09:15.858Z",
+    "host": "WS-0251",
+    "event": "PROC_START",
+    "user": "-",
+    "process": "usb-helper",
+    "target": "parent=sched hash=80e9c836e135 signed=no"
+  },
+  {
+    "rowid": 2576938,
+    "ts": "2026-10-13T09:13:23.769Z",
+    "host": "WS-0502",
+    "event": "PROC_START",
+    "user": "-",
+    "process": "usb-helper",
+    "target": "parent=sched hash=80e9c836e135 signed=no"
+  },
+  {
+    "rowid": 2579191,
+    "ts": "2026-10-13T09:14:04.075Z",
+    "host": "WS-2510",
+    "event": "PROC_START",
+    "user": "-",
+    "process": "usb-helper",
+    "target": "parent=sched hash=80e9c836e135 signed=no"
+  },
+  {
+    "rowid": 2595182,
+    "ts": "2026-10-13T09:24:21.002Z",
+    "host": "WS-7028",
+    "event": "PROC_START",
+    "user": "-",
+    "process": "usb-helper",
+    "target": "parent=sched hash=80e9c836e135 signed=no"
+  },
+  {
+    "rowid": 2599652,
+    "ts": "2026-10-13T09:27:27.845Z",
+    "host": "WS-9287",
+    "event": "PROC_START",
+    "user": "-",
+    "process": "usb-helper",
+    "target": "parent=sched hash=80e9c836e135 signed=no"
+  },
+  {
+    "rowid": 2602282,
+    "ts": "2026-10-13T09:29:16.098Z",
+    "host": "WS-8534",
+    "event": "PROC_START",
+    "user": "-",
+    "process": "usb-helper",
+    "target": "parent=sched hash=80e9c836e135 signed=no"
+  },
+  {
+    "rowid": 2606052,
+    "ts": "2026-10-13T09:31:53.679Z",
+    "host": "WS-7279",
+    "event": "PROC_START",
+    "user": "-",
+    "process": "usb-helper",
+    "target": "parent=sched hash=80e9c836e135 signed=no"
+  },
+  {
+    "rowid": 2607338,
+    "ts": "2026-10-13T09:32:45.159Z",
+    "host": "WS-2259",
+    "event": "PROC_START",
+    "user": "-",
+    "process": "usb-helper",
+    "target": "parent=sched hash=80e9c836e135 signed=no"
+  },
+  {
+    "rowid": 2616764,
+    "ts": "2026-10-13T09:38:51.580Z",
+    "host": "WS-4518",
+    "event": "PROC_START",
+    "user": "-",
+    "process": "usb-helper",
+    "target": "parent=sched hash=80e9c836e135 signed=no"
+  },
+  {
+    "rowid": 2617873,
+    "ts": "2026-10-13T09:39:35.476Z",
+    "host": "WS-3514",
+    "event": "PROC_START",
+    "user": "-",
+    "process": "usb-helper",
+    "target": "parent=sched hash=80e9c836e135 signed=no"
+  },
+  {
+    "rowid": 2621639,
+    "ts": "2026-10-13T09:42:01.693Z",
+    "host": "WS-0753",
+    "event": "PROC_START",
+    "user": "-",
+    "process": "usb-helper",
+    "target": "parent=sched hash=80e9c836e135 signed=no"
+  },
+  {
+    "rowid": 2625066,
+    "ts": "2026-10-13T09:44:09.574Z",
+    "host": "WS-2008",
+    "event": "PROC_START",
+    "user": "-",
+    "process": "usb-helper",
+    "target": "parent=sched hash=80e9c836e135 signed=no"
+  },
+  {
+    "rowid": 2632521,
+    "ts": "2026-10-13T09:48:46.342Z",
+    "host": "WS-8283",
+    "event": "PROC_START",
+    "user": "-",
+    "process": "usb-helper",
+    "target": "parent=sched hash=80e9c836e135 signed=no"
+  },
+  {
+    "rowid": 2643444,
+    "ts": "2026-10-13T09:55:19.946Z",
+    "host": "WS-4016",
+    "event": "PROC_START",
+    "user": "-",
+    "process": "usb-helper",
+    "target": "parent=sched hash=80e9c836e135 signed=no"
+  },
+  {
+    "rowid": 2644275,
+    "ts": "2026-10-13T09:55:51.418Z",
+    "host": "WS-9538",
+    "event": "PROC_START",
+    "user": "-",
+    "process": "usb-helper",
+    "target": "parent=sched hash=80e9c836e135 signed=no"
+  },
+  {
+    "rowid": 2644460,
+    "ts": "2026-10-13T09:55:58.440Z",
+    "host": "WS-1506",
+    "event": "PROC_START",
+    "user": "-",
+    "process": "usb-helper",
+    "target": "parent=sched hash=80e9c836e135 signed=no"
+  },
+  {
+    "rowid": 2644766,
+    "ts": "2026-10-13T09:56:09.553Z",
+    "host": "WS-6024",
+    "event": "PROC_START",
+    "user": "-",
+    "process": "usb-helper",
+    "target": "parent=sched hash=80e9c836e135 signed=no"
+  },
+  {
+    "rowid": 2648079,
+    "ts": "2026-10-13T09:58:05.472Z",
+    "host": "WS-3263",
+    "event": "PROC_START",
+    "user": "-",
+    "process": "usb-helper",
+    "target": "parent=sched hash=80e9c836e135 signed=no"
+  },
+  {
+    "rowid": 2650668,
+    "ts": "2026-10-13T09:59:33.671Z",
+    "host": "WS-7781",
+    "event": "PROC_START",
+    "user": "-",
+    "process": "usb-helper",
+    "target": "parent=sched hash=80e9c836e135 signed=no"
+  },
+  {
+    "rowid": 2651113,
+    "ts": "2026-10-13T09:59:49.673Z",
+    "host": "WS-5020",
+    "event": "PROC_START",
+    "user": "-",
+    "process": "usb-helper",
+    "target": "parent=sched hash=80e9c836e135 signed=no"
+  },
+  {
+    "rowid": 2673251,
+    "ts": "2026-10-13T10:03:58.087Z",
+    "host": "WS-5271",
+    "event": "PROC_START",
+    "user": "-",
+    "process": "usb-helper",
+    "target": "parent=sched hash=80e9c836e135 signed=no"
+  },
+  {
+    "rowid": 2673481,
+    "ts": "2026-10-13T10:04:00.383Z",
+    "host": "WS-9036",
+    "event": "PROC_START",
+    "user": "-",
+    "process": "usb-helper",
+    "target": "parent=sched hash=80e9c836e135 signed=no"
+  },
+  {
+    "rowid": 2677679,
+    "ts": "2026-10-13T10:04:40.972Z",
+    "host": "WS-5522",
+    "event": "PROC_START",
+    "user": "-",
+    "process": "usb-helper",
+    "target": "parent=sched hash=80e9c836e135 signed=no"
+  },
+  {
+    "rowid": 2691920,
+    "ts": "2026-10-13T10:07:46.178Z",
+    "host": "WS-5773",
+    "event": "PROC_START",
+    "user": "-",
+    "process": "usb-helper",
+    "target": "parent=sched hash=80e9c836e135 signed=no"
+  },
+  {
+    "rowid": 2694483,
+    "ts": "2026-10-13T10:08:22.173Z",
+    "host": "WS-2761",
+    "event": "PROC_START",
+    "user": "-",
+    "process": "usb-helper",
+    "target": "parent=sched hash=80e9c836e135 signed=no"
+  },
+  {
+    "rowid": 2699517,
+    "ts": "2026-10-13T10:09:32.216Z",
+    "host": "WS-4267",
+    "event": "PROC_START",
+    "user": "-",
+    "process": "usb-helper",
+    "target": "parent=sched hash=80e9c836e135 signed=no"
+  },
+  {
+    "rowid": 2714231,
+    "ts": "2026-10-13T10:13:09.702Z",
+    "host": "WS-8785",
+    "event": "PROC_START",
+    "user": "-",
+    "process": "usb-helper",
+    "target": "parent=sched hash=80e9c836e135 signed=no"
+  },
+  {
+    "rowid": 2717777,
+    "ts": "2026-10-13T10:14:03.516Z",
+    "host": "WS-3012",
+    "event": "PROC_START",
+    "user": "-",
+    "process": "usb-helper",
+    "target": "parent=sched hash=80e9c836e135 signed=no"
+  },
+  {
+    "rowid": 2719027,
+    "ts": "2026-10-13T10:14:22.982Z",
+    "host": "WS-6275",
+    "event": "PROC_START",
+    "user": "-",
+    "process": "usb-helper",
+    "target": "parent=sched hash=80e9c836e135 signed=no"
+  },
+  {
+    "rowid": 2720750,
+    "ts": "2026-10-13T10:14:49.698Z",
+    "host": "WS-6777",
+    "event": "PROC_START",
+    "user": "-",
+    "process": "usb-helper",
+    "target": "parent=sched hash=80e9c836e135 signed=no"
+  },
+  {
+    "rowid": 2724357,
+    "ts": "2026-10-13T10:16:38.612Z",
+    "host": "WS-7530",
+    "event": "PROC_START",
+    "user": "-",
+    "process": "usb-helper",
+    "target": "parent=sched hash=80e9c836e135 signed=no"
+  },
+  {
+    "rowid": 2726723,
+    "ts": "2026-10-13T10:17:57.100Z",
+    "host": "WS-1255",
+    "event": "PROC_START",
+    "user": "-",
+    "process": "usb-helper",
+    "target": "parent=sched hash=80e9c836e135 signed=no"
+  },
+  {
+    "rowid": 2732529,
+    "ts": "2026-10-13T10:21:13.015Z",
+    "host": "WS-1757",
+    "event": "PROC_START",
+    "user": "-",
+    "process": "usb-helper",
+    "target": "parent=sched hash=80e9c836e135 signed=no"
+  },
+  {
+    "rowid": 2732648,
+    "ts": "2026-10-13T10:21:17.369Z",
+    "host": "WS-4769",
+    "event": "PROC_START",
+    "user": "-",
+    "process": "usb-helper",
+    "target": "parent=sched hash=80e9c836e135 signed=no"
+  },
+  {
+    "rowid": 2734109,
+    "ts": "2026-10-13T10:22:09.529Z",
+    "host": "WS-8032",
+    "event": "PROC_START",
+    "user": "-",
+    "process": "usb-helper",
+    "target": "parent=sched hash=80e9c836e135 signed=no"
+  },
+  {
+    "rowid": 2737759,
+    "ts": "2026-10-13T10:24:20.658Z",
+    "host": "WS-9789",
+    "event": "PROC_START",
+    "user": "-",
+    "process": "usb-helper",
+    "target": "parent=sched hash=80e9c836e135 signed=no"
+  },
+  {
+    "rowid": 2742429,
+    "ts": "2026-10-13T10:27:02.647Z",
+    "host": "WS-1004",
+    "event": "PROC_START",
+    "user": "-",
+    "process": "usb-helper",
+    "target": "parent=sched hash=80e9c836e135 signed=no"
+  },
+  {
+    "rowid": 2744613,
+    "ts": "2026-10-13T10:28:18.222Z",
+    "host": "WS-6526",
+    "event": "PROC_START",
+    "user": "-",
+    "process": "usb-helper",
+    "target": "parent=sched hash=80e9c836e135 signed=no"
+  },
+  {
+    "rowid": 2751264,
+    "ts": "2026-10-13T10:32:21.435Z",
+    "host": "WS-3765",
+    "event": "PROC_START",
+    "user": "-",
+    "process": "usb-helper",
+    "target": "parent=sched hash=80e9c836e135 signed=no"
+  },
+  {
+    "rowid": 4506005,
+    "ts": "2026-10-14T08:25:31.639Z",
+    "host": "WS-5806",
+    "event": "PROC_START",
+    "user": "-",
+    "process": "sysupdate",
+    "target": "parent=sched hash=5d9af63b6a95 signed=no"
+  },
+  {
+    "rowid": 4506839,
+    "ts": "2026-10-14T08:27:46.643Z",
+    "host": "WS-3971",
+    "event": "PROC_START",
+    "user": "-",
+    "process": "sysupdate",
+    "target": "parent=sched hash=a1c91877a6dc signed=no"
+  },
+  {
+    "rowid": 4521895,
+    "ts": "2026-10-14T08:48:57.255Z",
+    "host": "WS-8486",
+    "event": "PROC_START",
+    "user": "-",
+    "process": "sysupdate",
+    "target": "parent=sched hash=6e9bab65d92b signed=no"
+  },
+  {
+    "rowid": 6501838,
+    "ts": "2026-10-15T08:06:18.789Z",
+    "host": "WS-2244",
+    "event": "PROC_START",
+    "user": "-",
+    "process": "sysupdate",
+    "target": "parent=sched hash=a4f0a7495f3c signed=no"
+  },
+  {
+    "rowid": 6528588,
+    "ts": "2026-10-15T08:27:38.529Z",
+    "host": "WS-0547",
+    "event": "PROC_START",
+    "user": "-",
+    "process": "sysupdate",
+    "target": "parent=sched hash=050dafa50cf5 signed=no"
+  },
+  {
+    "rowid": 6535208,
+    "ts": "2026-10-15T08:38:47.987Z",
+    "host": "WS-4010",
+    "event": "PROC_START",
+    "user": "-",
+    "process": "sysupdate",
+    "target": "parent=sched hash=89e6e388925a signed=no"
+  }
+]

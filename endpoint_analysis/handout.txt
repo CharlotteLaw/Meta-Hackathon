@@ -1,0 +1,707 @@
+Bearcorp Threat Hunt
+Your mission
+Attackers spent five days inside Bearcorp, a fictional company with about 10,000 hosts.
+Your team is tasked to find the attacker’s actions in the company's logs, identify the
+compromised hosts, and build a dashboard that helps analysts investigate them.
+1. How it works
+Hundreds of attacker actions are hidden in Bearcorp's logs. Searching logs for signs of an
+attacker is called threat hunting. You will:
+●
+●
+●
+Write detections: SQL queries that search the logs for signs of the attacker.
+Use your detections to identify the compromised hosts, and report each attacker action
+as a finding in findings.json.
+Build a dashboard: a front-end where someone can run your detections and change
+their settings.
+2. Log sources
+Your detections run against various logs. Each log is a table in bearcorp.db.
+More details about the logs are in the Log reference tab.
+3. Team roles
+For creating detections and generating findings, it is recommended to split up the work into four
+roles. Each role focuses on a particular set of logs.
+Role Relevant Tables
+1. DNS analyst dns, iocs
+2. Web analyst proxy
+3. Endpoint analyst host, usb
+4. Identity analyst auth, vpn, ldap, fw, flow
+More details in the Team roles tab.
+Then, as a group, you will create a dashboard which acts as a front-end for the various
+detections that you have created.
+4. Your two deliverables
+Deliverable 1: Interactive dashboard
+Build one dashboard per team: a visual app that someone can click through, such as a web
+page. It should:
+●
+●
+●
+Let someone change a detection's settings, such as a threshold or a keyword list, and
+see the findings update on screen.
+Include information to help analysts triage the finding.
+Have a button to export findings.json.
+Your team delivers one dashboard. The dashboard is graded by judges.
+Deliverable 2: findings.json
+●
+Each teammate submits a findings.json with your team's team
+id.
+_
+●
+Files with the same team
+id are merged, and duplicate findings are ignored.
+_
+●
+Teams are graded by F1 score, which combines recall (how many of the attacker
+actions you found) and precision (how many of your findings are correct).
+The file format and scoring details are in the Submission tab.
+Next: open the Start here tab
+Start here
+1. Set up
+The dataset is one SQLite database, bearcorp.db, with one table per log. Python's built-in
+sqlite3 module can run queries against it.
+A minimal Python example that lists the tables and runs one query:
+import sqlite3
+con = sqlite3.connect("dataset/bearcorp.db")
+# Every table and its columns
+for (table,) in con.execute("SELECT name FROM sqlite
+master WHERE type = 'table' AND name NOT
+_
+LIKE 'sqlite
+%'"):
+_
+cols = [c[1] for c in con.execute(f"PRAGMA table
+info({table})")]
+_
+print(table, cols)
+# Five commands run on one computer
+rows = con.execute(
+("WS-0042"
+,),
+).fetchall()
+for row in rows:
+print(row)
+"SELECT ts, process, target FROM host WHERE host = ? AND event = 'CMD' LIMIT 5"
+,
+The full schema overview is available in Log reference.
+2. Examples
+Each row below walks through a possible workflow: a prompt you could give AI, the detection
+(SQL query) it might write, and a finding that query returns.
+Values below are made up.
+Role Example Prompt Example Detection SQL Example Finding
+1. DNS analyst
+A known-bad
+domain
+“Which computers looked up
+a domain listed in the iocs
+table? Show the time, host,
+program, and logged-in
+”
+user.
+SELECT h.ts, h.host, h.process, h.target,
+(SELECT l.user FROM host l
+WHERE l.host = h.host
+AND l.event = 'LOGIN'
+AND l.ts <= h.ts
+ORDER BY l.ts DESC LIMIT 1) AS user
+FROM host h
+WHERE h.event = 'DNS_QUERY'
+AND h.target IN (SELECT value FROM iocs
+category: Known-bad indicators
+timestamp:
+2026-10-14T09:00:00.000Z
+host: WS-0421
+user: user123
+process: browser
+Role Example Prompt Example Detection SQL Example Finding
+WHERE type = 'domain');
+2. Web analyst
+A big upload to a
+rare site
+“Which sites received large
+uploads from only a few
+computers?”
+Then: “Which computers
+uploaded to that site, and
+when did each one start?”
+-- Step 1: sites with big uploads
+SELECT domain,
+COUNT(DISTINCT src_ip) AS computers,
+MAX(bytes_out) AS biggest_upload
+FROM proxy
+WHERE method IN ('POST', 'PUT')
+GROUP BY domain
+HAVING computers < 20
+ORDER BY biggest_upload DESC;
+-- Step 2: computers that used one site
+SELECT host, process, MIN(ts) AS first_ts
+FROM host
+WHERE event = 'DNS_QUERY'
+AND target = 'files.example-drop.net'
+GROUP BY host, process;
+category: Data theft
+timestamp:
+2026-10-13T02:10:44.120Z
+host: WS-1234
+user: user456
+process: uploader
+3. Endpoint
+analyst
+A persistence
+command
+“Find commands in the host
+table that add SSH keys,
+cron jobs, users, or startup
+lines, or that clear history or
+delete logs.
+”
+SELECT ts, host, process, target
+FROM host
+WHERE event = 'CMD'
+AND (target LIKE '%authorized_keys%'
+OR target LIKE '%cron%'
+OR target LIKE 'useradd%'
+OR target LIKE '%.bashrc%'
+OR target LIKE '%history -c%'
+OR target LIKE 'rm -f /var/log%');
+category: Host intrusion signs
+timestamp:
+2026-10-12T15:42:10.300Z
+host: WS-0777
+user: user789
+process: bash
+4. Identity
+analyst
+MFA fatigue
+“Find users with a burst of
+failed SSO logins followed
+by a success.
+”
+SELECT a.user, u.workstation,
+MIN(a.ts) AS first_failure,
+COUNT(*) AS failures
+FROM auth a
+JOIN users u ON u.user = a.user
+WHERE a.service = 'sso'
+AND a.result = 'fail'
+GROUP BY a.user, a.src
+HAVING failures >= 10
+AND EXISTS (SELECT 1 FROM auth s
+WHERE s.user = a.user
+AND s.src = a.src
+AND s.result = 'success');
+category: Credential abuse
+timestamp:
+2026-10-15T04:12:00.500Z
+host: WS-2468
+user: user321
+process: sso
+3. Moving to finding real threats
+Once you get an idea of what working with the logs is like, and the workflow of working with an
+agent, move onto the Team roles tab, and start working to find the real threats.
+1. Find your role's table in the Team roles tab. It lists seven hunts, ordered from easy to
+hard.
+2. Start with hunt 1. Write a detection for it, then save the findings it returns into a
+findings.json.
+3. Move to the next hunt when your detection stops turning up new attacks, or whenever
+you get stuck. Each hunt stands on its own, there are not any dependencies.
+4. If you finish your hunts early, I recommend reviewing your findings and detections for
+false positives, or helping your teammates. From my testing, AI gets pretty far, but has a
+lot of false positives (which hurts your score).
+Once you are ready, your team can begin to create the dashboard and incorporate the
+detections that you have created.
+Level Easy Easy Medium Medium Medium Hard Hard Team roles
+Different hunts don’t depend on each other, so if you are stuck, you can move onto the next
+hunt. The Log reference tab describes every table and column.
+Role 1: DNS analyst
+Tables you own: dns, iocs. Take the host and process from DNS
+QUERY rows in the host
+_
+table for the same domain.
+Hunt What to look for Submission Category
+1. Known-bad
+domains
+query exactly matches a domain in the iocs table. Worked example in
+the Start here tab.
+Known-bad indicators
+2. Lookalike company
+domains
+Domains that imitate Bearcorp: one letter swapped, missing, doubled, or
+added; Bearcorp plus a word such as login or support; or names starting
+with xn--
+, which can hide look-alike letters.
+Deceptive domains
+3. Data smuggled out
+through DNS
+One source sends many TXT or AAAA lookups, each with a new
+scrambled name under the same domain.
+Data theft
+4. Commands hidden
+in DNS
+Very long scrambled names under one domain in normal A lookups;
+repeated TXT lookups of one name whose answers look like coded
+commands; or answers hundreds of characters long.
+Command and control
+5. Made-up domains One source gets many NXDOMAIN answers for random-looking or
+two-word names, in a burst or spread over hours; or it guesses many
+subdomains, such as admin, vpn, or dev, of one domain.
+Reconnaissance
+6. New and shifting
+domains
+Dozens of never-seen domains that resolve and are then visited, all within
+a few minutes; one domain returning many different IPs; a domain missing
+from the iocs table that resolves to the same IP as a listed one; or one
+host looking up the same domain at steady intervals for hours.
+Command and control
+7. Spread-out
+subdomain sweep
+Several computers each look up a few subdomains of the same outside
+domain, so no single computer looks busy.
+Reconnaissance
+Role 2: Web analyst
+Tables you own: proxy. Take the host and process from DNS
+QUERY rows in the host table
+_
+for the same domain, timed at each computer's first request. For a raw IP address, use the
+NET
+CONNECT row to that IP instead._
+Level Easy Easy Medium Medium Medium Hard Hard Level Easy Easy Easy Hunt What to look for Submission Category
+1. Big uploads to rare
+sites
+POST or PUT requests with large bytes
+out to sites that only a few
+_
+computers use. Backup sites with hundreds of users are normal. Worked
+example in the Start here tab.
+Data theft
+2. Known-bad URLs 'http://' || domain || url matches a url in the iocs table. The
+site itself is normal; only that page is bad.
+Known-bad indicators
+3. Data hidden in web
+addresses
+Very long scrambled text after the ? in url, sent again and again by one
+computer.
+Data theft
+4. Odd web traffic user
+agent values that are empty, look scripted, or are misspelled; a
+_
+domain that is a raw IP address; or many small POSTs to a cryptocurrency
+mining pool.
+Command and control
+5. Regular check-ins One computer sends the same small request to the same site at steady
+intervals: every few minutes, only at night, or only during work hours. Long
+scrambled data in the url belongs to hunt 3, and hourly fetches from a
+look-alike update site belong to Endpoint hunt 7.
+Command and control
+6. Rotating check-ins Several computers check in to the same site in turn, each about an hour
+apart, so each one looks quiet.
+Command and control
+7. Hiding in a popular
+cloud storage site
+Inside normal traffic to a storage site everyone uses: status checks hours
+apart, small files traded every hour, or one user uploading far more than
+usual. The big uploads are Data theft; status checks and small hourly file
+trades (GET plus PUT) are Command and control.
+Command and control,
+Data theft
+Role 3: Endpoint analyst
+Tables you own: host, usb. Each CMD row already gives the timestamp, host, and process;
+add the user logged in at that time.
+Hunt What to look for Submission Category
+1. Persistence and
+cleanup commands
+CMD rows that add an SSH key (authorized
+keys), a scheduled job
+_
+(crontab), a new user (useradd), or a startup line (.bashrc), or that
+clear shell history or delete files in /var/log. Worked example in the
+Start here tab.
+Host intrusion signs
+2. Hands-on-keyboard
+commands
+Reverse shells that connect a shell to an outside address (/dev/tcp, nc
+-e, or a python3 socket connect); long encoded text decoded and run
+(base64 -d); searches for privilege-escalation files (find / -perm
+-4000); requests to the cloud metadata address 169.254.169.254.
+Host intrusion signs
+3. Temp-folder Programs started from /tmp or /dev/shm (Malware delivery); nmap or Malware delivery,
+Level Medium Medium Hard Hard Level Easy Easy Medium Hunt What to look for Submission Category
+programs and
+scanners
+masscan network scans (Reconnaissance); ping with large packets to an
+outside address, used as a tunnel (Command and control).
+Reconnaissance,
+Command and control
+4. Stolen credentials
+and USB theft
+Commands that read private SSH keys, cloud credentials, password files,
+or browser cookie and saved-password files (Host intrusion signs); reading
+public keys (id
+rsa.pub) is normal. Files archived with tar, zip, or 7z for
+_
+theft, often minutes before a large copy in the usb table (Data theft): use
+the archive command's time and process.
+Host intrusion signs,
+Data theft
+5. Downloads piped
+into a shell
+A command that downloads a URL and pipes it into sh or bash. Run by
+bash: Malware delivery. Run by a browser plugin process: Host intrusion
+signs. Some setup scripts are normal, so check the URL and the program.
+Malware delivery, Host
+intrusion signs
+6. Unsigned programs
+and empty desks
+PROC
+_
+START rows where a common program is unsigned or has an
+unusual hash (Malware delivery; use the time of its first NET
+CONNECT
+_
+to an outside address); network activity while nobody is logged in, with
+user none (Host intrusion signs); SSH to a server that skips host key
+checks (Host intrusion signs).
+Malware delivery, Host
+intrusion signs
+7. Risky downloads .exe, .dll, .scr, or .hta files downloaded from untrusted download sites; a
+loader followed minutes later by a second file; or updates fetched from a
+look-alike of the real update site. Find them in the proxy table and take
+the host and process from the host table.
+Malware delivery
+Role 4: Identity analyst
+Tables you own: auth, vpn, ldap, fw, flow. For login attacks from outside, the host is the
+account owner's workstation (from the users table), the user is that account, and the process is
+the service name (sso, vpn, or kerberos). For activity from an inside computer, use that
+computer's rows in the host table.
+Hunt What to look for Submission Category
+1. MFA fatigue One user gets 10 or more failed sso logins within 30 minutes, then a
+success. SSO is the company web login. Use the time of the first failed
+login. Worked example in the Start here tab.
+Credential abuse
+2. Directory dumps
+and blocked
+connections
+ldap: one host runs many searches with wildcard filters such as (uid=*)
+(Reconnaissance). fw: one address denied again and again by the
+threat-intel-block rule (Command and control); take the host and process
+from the NET
+CONNECT row in the host table at the same moment, and
+_
+report one finding per host at its first denial.
+Reconnaissance,
+Command and control
+3. VPN uploads and
+password spraying
+vpn sessions that upload far more than they download (Data theft). One
+outside address fails sso logins for many different users in short bursts,
+Data theft, Credential
+abuse
+Level Medium Medium Hard Hard Hunt 4. Service accounts
+and admins over SSH
+5. Kerberos ticket
+bursts and fake
+accounts
+6. Remote access to
+new servers
+7. Impossible travel
+and slow spraying
+What to look for and each burst ends with one account getting in (Credential abuse).
+Report each account that got in, at the time of the first failed login in its
+burst.
+CMD rows in the host table where a workstation runs ssh as a service
+account (svc-
+…) or, at night, as an admin account (admin-
+…). Report the
+workstation, its logged-in user, and process bash.
+Kerberos is the Windows login ticket system. One user requests tickets for
+many different services within seconds, right after an odd python3
+command in the host table (Credential abuse). Kerberos failures for many
+accounts missing from the users table (Reconnaissance). Use process
+kerberos for both.
+A workstation opens RDP (port 3389), SMB file sharing (445), WinRM
+(5985), or WMI (135) to a server. Admins do this too, so look for attack
+signs: smbclient copying a whole share (recurse; mget *), wmic
+starting a hidden process (process call create), winrs or winexe
+running as an admin- account or with a password hash, and for xfreerdp,
+an rdp sign-in in the auth table as an admin- account without MFA. Report
+the workstation's CMD row (xfreerdp, smbclient, winrs or winexe, wmic) as
+Lateral movement. A workstation slowly probing many server ports is
+Reconnaissance; its probing program shows in NET
+CONNECT rows.
+_
+One user logs in to the VPN from two addresses in different networks
+within an hour; use the first login. One outside address tries a few sso
+logins an hour or fewer, spread over one to four days, before one works;
+use its first attempt.
+Submission Category
+Credential abuse
+Credential abuse,
+Reconnaissance
+Lateral movement,
+Reconnaissance
+Credential abuse
+Log reference
+Matching IP addresses to computers
+IP
+ASSIGNED rows in the host table show which host had each IP and from when, because
+_
+IPs change during the week. Branch-office computers sit behind NAT (network address
+translation, where many computers share a few addresses), so the dns, proxy, and fw tables
+show them as 10.9.1.1 to 10.9.1.4. The nat table lists the internal IPs behind each address,
+and the host table confirms the exact computer. The host sensor logs each program's
+DNS
+QUERY and NET
+_
+_
+CONNECT to a destination about once an hour, so many repeat
+requests appear only in dns, proxy, and fw. The flow table always shows the real internal IP.
+Log sources at a glance
+Log source Overview
+DNS (dns) DNS queries and answers, including record type, response code, returned value, and TTL.
+Web proxy (proxy) Web requests with domains, paths, status codes, byte counts, and user agents.
+Host sensor (host) IP assignments, logins, process starts, network connections, DNS queries, and commands.
+Network flow (flow) Internal connections with source and destination addresses, ports, byte counts, and duration.
+Authentication (auth) SSO, VPN, SSH, RDP, WinRM, SMB, and Kerberos authentication events.
+Firewall (fw) Outbound firewall allow and deny decisions.
+VPN (vpn) VPN sessions with the user, source IP, duration, and upload and download totals.
+USB (usb) USB device insert, copy, and remove events, including megabytes copied.
+LDAP (ldap) Directory queries from each host, including the filter and number of returned entries.
+Network logs
+dns
+DNS queries and replies.
+Column Description
+ts Time of the DNS query.
+src
+_
+ip IP address that sent the query.
+query Domain name that the host requested.
+qtype DNS record type, such as A, AAAA, or TXT.
+rcode DNS result, such as NOERROR or NXDOMAIN.
+answer Value returned by DNS.
+ttl Number of seconds for which the answer can be cached.
+proxy
+Web requests that reached the proxy.
+Column Description
+ts Time of the request.
+src
+_
+ip Source IP address seen by the proxy.
+method HTTP method, such as GET or POST.
+domain Destination domain.
+url Requested path and query string.
+status HTTP response status.
+bytes
+_
+out Bytes sent from the client.
+bytes
+_
+in Bytes received by the client.
+user
+_
+agent Client user-agent string.
+flow
+Internal network connections, with one row for each flow.
+Column Description
+ts Start time of the flow.
+Column Description
+src
+ip Source IP address.
+_
+src
+_
+port Source port.
+dst
+ip Destination IP address.
+_
+dst
+_
+port Destination port.
+proto Network protocol, such as TCP or UDP.
+bytes Total bytes transferred.
+duration
+ms _
+Flow duration in milliseconds.
+fw
+Outbound firewall decisions: every deny, plus allows to uncommon ports.
+Column Description
+ts Time of the connection attempt.
+src
+_
+ip Source IP address seen by the firewall.
+dst
+ip Destination IP address.
+_
+dst
+_
+port Destination port.
+proto Network protocol.
+action Firewall decision: allow or deny.
+rule Firewall rule that made the decision.
+Endpoint log
+host
+Host activity. This table connects network events to a host, process, and user.
+Column Description
+ts Time of the host event.
+host Host name.
+Column event user process target Event IP
+_
+ASSIGNED LOGIN, LOGOUT,
+LOGIN
+FAIL
+_
+PROC
+_
+START NET
+_
+CONNECT DNS
+_
+QUERY CMD usb
+USB device activity.
+Column ts host user action device mb Description
+Event type.
+User for login events. Other events can contain a dash.
+Process responsible for the event.
+Event-specific detail, such as an IP, domain, command, login source,
+or process lineage.
+Meaning of target
+IP address assigned to the host.
+Login source for LOGIN and LOGIN
+_
+FAIL (local logins use console).
+LOGOUT rows show a dash (-).
+Parent process, short hash, and signed status.
+Destination in IP:port form.
+Requested domain.
+Command that ran.
+Description
+Time of the USB event.
+Host name.
+User linked to the event.
+Action: insert, copy, or remove.
+USB device identifier.
+Megabytes copied. It is zero for insert and remove events.
+Identity logs
+auth
+Authentication events from SSO, VPN, SSH, RDP, WinRM, SMB, and Kerberos.
+Column Description
+ts Time of the authentication event.
+user Account used for the attempt.
+src Source host or IP address. Its form depends on the service.
+service Authentication service.
+result Result: success or fail.
+mfa MFA result: yes, no, or na (not applicable).
+target Destination server or requested service principal, when applicable.
+vpn
+One row for each VPN session, recorded at session start.
+Column Description
+ts VPN session start time.
+user Authenticated user.
+src
+ip External client IP address.
+_
+duration
+ms _
+Session duration in milliseconds.
+bytes
+_
+up Bytes uploaded through the VPN.
+bytes
+_
+down Bytes downloaded through the VPN.
+ldap
+Directory queries from client hosts.
+Column Description
+ts Time of the directory query.
+Column Description
+host Host that sent the query.
+user User linked to the query.
+filter LDAP search filter.
+entries Number of directory entries returned.
+Reference tables
+Table Columns Description
+users user, department,
+role, status,
+workstation
+User details and assigned workstation.
+assets hostname, ip, type,
+team
+Host details and initial IP address.
+iocs type, value Known-bad domains and URLs for exact
+matching.
+nat nat
+ip, internal
+_
+start, end
+_
+ip,
+Branch NAT mapping and its active time
+range.
+Submission
+At the end, your team hands in its two deliverables: findings.json files, which are scored
+automatically, and your dashboard, which judges try in person.
+Your findings.json
+Your team’s findings will be submitted in a findings.json, exported from your dashboard or
+generated through your detections. It holds your team
+id and a findings list, with one object
+_
+for each attacker action you found. Everyone on a team must use exactly the same team
+id:
+_
+files with the same team
+id are merged and scored as one team.
+_
+{
+"team
+id": "your-team-id"
+_
+"findings": [
+{
+,
+"category": "Known-bad indicators"
+,
+"timestamp": "2026-10-14T09:00:00.000Z"
+"host": "WS-0421"
+,
+"user": "user123"
+,
+"process": "browser"
+,
+}
+]
+}
+How findings are scored
+Files with the same team
+id are merged, and the combined findings are compared with the
+_
+answer key. A finding is correct when it matches an attacker action on all five fields:
+Field Match rule
+category The exact category name
+host The exact host name
+user The same name, in any capitalization
+process The same name, in any capitalization
+timestamp Within 5 minutes of the action's first event, before or after
+Duplicates are ignored. If you or a teammate report an attack that is already matched, or repeat
+a finding exactly, the extra copy counts neither for nor against your team. Teammates can work
+on overlapping attacks without losing points.
+The metrics
+Metric How it is calculated
+Precision Correct findings ÷ findings submitted, not counting duplicates
+Recall Correct findings ÷ all attacker actions in the logs
+F1 score (overall) 2 × precision × recall ÷ (precision + recall)
+Examples, for a dataset with 500 attacker actions:
+Findings submitted Correct Precision Recall F1
+50 45 0.90 0.09 0.16
+200 150 0.75 0.30 0.43
+800 180 0.23 0.36 0.28
+Check before you submit
+Run python3 berkeley
+hackathon
+validate.py findings.json --data
+_
+_
+dataset/bearcorp.db. It flags a missing or example team
+id, unknown categories, hosts,
+_
+or users, and bad timestamps. Fix every error before you submit.
+Your dashboard
+Submit your dashboard (zip the files if there are multiple).
+Judges will come around and grade the dashboard in person. Keep it running near the end of
+the event so judges can try it.
